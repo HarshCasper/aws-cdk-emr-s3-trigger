@@ -1,0 +1,47 @@
+name: Deploy on LocalStack 
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  cdk:
+    name: Setup infrastructure using CDK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install CDK
+        run: |
+          npm install -g aws-cdk-local aws-cdk
+          cdklocal --version
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Start LocalStack
+        env:
+          LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
+        run: |
+          pip install localstack awscli-local[ver1]
+          docker pull localstack/localstack-pro:2.2.0
+          # Start LocalStack in the background
+          IMAGE_NAME=localstack/localstack-pro:2.2.0 DEBUG=1 localstack start -d
+          # Wait 30 seconds for the LocalStack container to become ready before timing out
+          echo "Waiting for LocalStack startup..."
+          localstack wait -t 15
+          echo "Startup complete"
+
+      - name: Deploy using CDK
+        run: |
+          cdklocal bootstrap aws://000000000000/us-east-1
+          cdklocal deploy --require-approval never
