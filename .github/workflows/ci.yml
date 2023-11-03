@@ -36,7 +36,7 @@ jobs:
         env:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
         run: |
-          IMAGE_NAME=localstack/localstack-pro:2.2.0 DEBUG=1 localstack start -d
+          $env:IMAGE_NAME=localstack/localstack-pro:2.2.0; localstack start -d
           echo "Waiting for LocalStack startup..."
           localstack wait -t 15
           echo "Startup complete"
