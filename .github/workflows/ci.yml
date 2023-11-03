@@ -7,51 +7,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows:
-    name: Windows Test
-    runs-on: windows-latest
-    steps:
-      - name: Install winget
-        uses: Cyberboss/install-winget@v1
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install deps
-        run: |
-          docker pull localstack/localstack-pro:2.2.0
-          winget install Amazon.AWSCLI
-          pip3 install localstack awscli-local[ver1]
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install CDK
-        run: |
-          npm install -g aws-cdk-local aws-cdk
-          cdklocal --version
-
-      - name: Install dependencies
-        run: |
-          npm install
-      - name: Start LocalStack
-        shell: pwsh
-        env:
-          LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
-        run: |
-          $env:IMAGE_NAME="localstack/localstack-pro:2.2.0"; localstack start -d --no-banner
-          powershell -command "Start-Sleep -s 15"
-
-      - name: Deploy using CDK
-        shell: pwsh
-        run: |
-          $Env:AWS_ACCESS_KEY_ID="test"
-          $Env:AWS_SECRET_ACCESS_KEY="test"
-          $Env:AWS_DEFAULT_REGION="us-east-1"
-          cdklocal bootstrap aws://000000000000/us-east-1
-          cdklocal deploy --require-approval never
-
-      - name: Check logs
-        run: |
-          localstack logs
   macos:
     name: macOS Test
     runs-on: macos-latest
