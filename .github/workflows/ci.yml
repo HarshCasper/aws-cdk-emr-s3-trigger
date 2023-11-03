@@ -33,13 +33,12 @@ jobs:
         run: |
           npm install
       - name: Start LocalStack
+        shell: pwsh
         env:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
         run: |
-          $env:IMAGE_NAME="localstack/localstack-pro:2.2.0"; localstack start -d
-          echo "Waiting for LocalStack startup..."
-          localstack wait -t 15
-          echo "Startup complete"
+          $env:IMAGE_NAME="localstack/localstack-pro:2.2.0"; localstack start -d --no-banner
+          powershell -command "Start-Sleep -s 15"
 
       - name: Deploy using CDK
         run: |
