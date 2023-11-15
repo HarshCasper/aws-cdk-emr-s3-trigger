@@ -78,6 +78,7 @@ jobs:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
           LOCALSTACK_API_KEY_STAGING: ${{ secrets.LOCALSTACK_API_KEY }}
           LS_CI_PROJECT: test-harshcasper
+          API_ENDPOINT: https://api.staging.aws.localstack.cloud/v1
         run: |
           pip install localstack awscli-local[ver1]
           docker pull localstack/localstack-pro
