@@ -81,9 +81,9 @@ jobs:
           API_ENDPOINT: 'https://api.staging.aws.localstack.cloud/v1'
         run: |
           pip install localstack awscli-local[ver1]
-          docker pull localstack/localstack-pro:2.2.0
+          docker pull localstack/localstack-pro
           # Start LocalStack in the background
-          IMAGE_NAME=localstack/localstack-pro:2.2.0 DEBUG=1 localstack start -d
+          DEBUG=1 localstack start -d
           # Wait 30 seconds for the LocalStack container to become ready before timing out
           echo "Waiting for LocalStack startup..."
           localstack wait -t 15
