@@ -78,12 +78,11 @@ jobs:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
           LOCALSTACK_API_KEY_STAGING: ${{ secrets.LOCALSTACK_API_KEY }}
           LS_CI_PROJECT: test-harshcasper
-          API_ENDPOINT: 'https://api.staging.aws.localstack.cloud/v1'
         run: |
           pip install localstack awscli-local[ver1]
           docker pull localstack/localstack-pro
           # Start LocalStack in the background
-          DEBUG=1 localstack start -d
+          DEBUG=1 EXTRA_CORS_ALLOWED_ORIGINS=http://localhost:3000,http://app.localhost.localstack.cloud,https://app.staging.aws.localstack.cloud,${EXTRA_CORS_ALLOWED_ORIGINS:-""} localstack start
           # Wait 30 seconds for the LocalStack container to become ready before timing out
           echo "Waiting for LocalStack startup..."
           localstack wait -t 30
