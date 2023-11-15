@@ -34,6 +34,7 @@ jobs:
       - name: Start LocalStack
         env:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
+          LS_CI_PROJECT: test-harshcasper
         run: |
           pip3 install localstack awscli-local[ver1]
           docker pull localstack/localstack-pro:2.2.0
