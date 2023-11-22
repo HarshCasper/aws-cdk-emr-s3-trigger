@@ -36,11 +36,8 @@ jobs:
           pip install localstack
           docker pull localstack/localstack-pro:latest
           # Start LocalStack in the background
-          localstack start
-          # Wait 30 seconds for the LocalStack container to become ready before timing out
-          echo "Waiting for LocalStack startup..."
-          localstack wait -t 30
-          echo "Startup complete"
+          DEBUG=1 localstack start
+          localstack wait -t 15
 
       - name: Deploy using CDK
         run: |
