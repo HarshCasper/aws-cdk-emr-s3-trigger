@@ -33,10 +33,10 @@ jobs:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
           LS_CI_PROJECT: test-harshcasper
         run: |
-          pip install localstack awscli-local[ver1]
+          pip install localstack
           docker pull localstack/localstack-pro
           # Start LocalStack in the background
-          DEBUG=1 localstack start
+          localstack start
           # Wait 30 seconds for the LocalStack container to become ready before timing out
           echo "Waiting for LocalStack startup..."
           localstack wait -t 30
