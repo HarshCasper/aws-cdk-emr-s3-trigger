@@ -36,7 +36,7 @@ jobs:
           pip install localstack
           docker pull localstack/localstack-pro:latest
           # Start LocalStack in the background
-          localstack start
+          DEBUG=1 localstack start
           localstack wait -t 15
 
       - name: Deploy using CDK
